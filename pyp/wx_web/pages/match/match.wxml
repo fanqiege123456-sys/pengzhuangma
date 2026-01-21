@@ -1,0 +1,78 @@
+<!--pages/match/match.wxml-->
+<view class="container">
+  <view class="match-detail" wx:if="{{matchInfo}}">
+    <!-- 匹配状态 -->
+    <view class="status-card">
+      <view class="status-icon">
+        <text class="icon">{{matchInfo.status === 'matched' ? '🎉' : matchInfo.status === 'friend_added' ? '👥' : '😔'}}</text>
+      </view>
+      <view class="status-text">
+        {{matchInfo.status === 'matched' ? '恭喜！匹配成功' : matchInfo.status === 'friend_added' ? '已添加好友' : '很遗憾，已错过'}}
+      </view>
+      <view class="collision-code-display">
+        <text class="code">{{matchInfo.code}}</text>
+      </view>
+    </view>
+
+    <!-- 用户信息 -->
+    <view class="users-card">
+      <view class="user-section">
+        <image class="user-avatar-large" src="{{matchInfo.user1.avatar}}" />
+        <view class="user-details">
+          <text class="user-name">{{matchInfo.user1.nickname}}</text>
+          <text class="user-wechat">微信号: {{matchInfo.user1.wechat_no}}</text>
+          <text class="user-region" wx:if="{{matchInfo.user1.region}}">地区: {{matchInfo.user1.region}}</text>
+          <text class="user-age" wx:if="{{matchInfo.user1.age}}">年龄: {{matchInfo.user1.age}}岁</text>
+        </view>
+      </view>
+      
+      <view class="vs-divider">
+        <text class="vs-text">VS</text>
+      </view>
+      
+      <view class="user-section">
+        <image class="user-avatar-large" src="{{matchInfo.user2.avatar}}" />
+        <view class="user-details">
+          <text class="user-name">{{matchInfo.user2.nickname}}</text>
+          <text class="user-wechat">微信号: {{matchInfo.user2.wechat_no}}</text>
+          <text class="user-region" wx:if="{{matchInfo.user2.region}}">地区: {{matchInfo.user2.region}}</text>
+          <text class="user-age" wx:if="{{matchInfo.user2.age}}">年龄: {{matchInfo.user2.age}}岁</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 时间信息 -->
+    <view class="time-card">
+      <view class="time-item">
+        <text class="time-label">匹配时间</text>
+        <text class="time-value">{{matchTime}}</text>
+      </view>
+      <view class="time-item" wx:if="{{matchInfo.status === 'matched'}}">
+        <text class="time-label">加好友截止</text>
+        <text class="time-value deadline">{{deadline}}</text>
+      </view>
+    </view>
+
+    <!-- 操作按钮 -->
+    <view class="actions" wx:if="{{matchInfo.status === 'matched'}}">
+      <button class="btn-secondary" bindtap="skipMatch">
+        跳过此次匹配
+      </button>
+      <button class="btn-primary" bindtap="addFriend">
+        立即添加好友
+      </button>
+    </view>
+    
+    <!-- 已加好友的操作 -->
+    <view class="actions" wx:if="{{matchInfo.status === 'friend_added'}}">
+      <button class="btn-primary" bindtap="startChat">
+        开始聊天
+      </button>
+    </view>
+  </view>
+
+  <!-- 加载状态 -->
+  <view class="loading" wx:if="{{!matchInfo}}">
+    <text>加载中...</text>
+  </view>
+</view>
