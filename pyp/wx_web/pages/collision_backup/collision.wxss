@@ -1,0 +1,65 @@
+/**pages/collision/collision.wxss**/
+.container {
+  padding: 30rpx;
+  background-color: #f5f5f5;
+  min-height: 100vh;
+}
+
+.collision-section, .generate-section {
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 30rpx;
+  margin-bottom: 30rpx;
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 30rpx;
+}
+
+.collision-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.collision-input {
+  padding: 24rpx;
+  border: 1px solid #e0e0e0;
+  border-radius: 12rpx;
+  font-size: 30rpx;
+}
+
+.collision-btn, .generate-btn {
+  background-color: #007AFF;
+  color: #fff;
+  padding: 24rpx;
+  border-radius: 12rpx;
+  font-size: 30rpx;
+  border: none;
+}
+
+.collision-btn[disabled] {
+  background-color: #ccc;
+}
+
+.current-code {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20rpx;
+  padding: 20rpx;
+  background-color: #f8f8f8;
+  border-radius: 8rpx;
+}
+
+.copy-btn {
+  background-color: #34c759;
+  color: #fff;
+  padding: 16rpx 24rpx;
+  border-radius: 8rpx;
+  font-size: 28rpx;
+  border: none;
+}
