@@ -1,0 +1,149 @@
+﻿<!--pages/collision-result/collision-result.wxml-->
+<view class="container">
+  <!-- 头部 -->
+  <view class="header">
+    <view class="header-decoration">
+      <view class="circle circle-1"></view>
+      <view class="circle circle-2"></view>
+    </view>
+    <view class="header-content">
+      <text class="header-title">{{mode === 'result' ? '🔥 匹配结果' : '🔍 搜索结果'}}</text>
+      <text class="header-subtitle">{{mode === 'result' ? '仅显示匹配成功的结果' : ('关键词：' + keyword)}}</text>
+    </view>
+  </view>
+
+  <!-- 结果为空时 -->
+  <view wx:if="{{results.length === 0 && matchResults.length === 0 && !loading}}" class="empty-result">
+    <view class="empty-content">
+      <text class="empty-icon">🔍</text>
+      <text class="empty-title">暂无匹配结果</text>
+      <text class="empty-desc">{{mode === 'result' ? '匹配成功后会在这里显示' : ('没有找到与"' + keyword + '"相关的碰撞码')}}</text>
+      <button wx:if="{{mode !== 'result'}}" class="create-btn" bindtap="createCollision">
+        <text class="btn-icon">✨</text>
+        <text class="btn-text">发起此关键词的碰撞</text>
+      </button>
+    </view>
+  </view>
+
+  <!-- 匹配结果（我的匹配，按关键词） -->
+  <view wx:if="{{matchResults.length > 0}}" class="results-section">
+    <view class="results-header">
+      <text class="results-count">匹配结果 {{matchResults.length}} 条</text>
+      <text class="results-tip">这些是你匹配成功的记录</text>
+    </view>
+    <scroll-view class="user-list" scroll-y>
+      <view wx:for="{{matchResults}}" wx:key="id" class="user-item">
+        <view class="user-info">
+          <image class="user-avatar" src="/images/default-avatar.png" mode="aspectFill"></image>
+          <view class="user-details">
+            <text class="user-nickname">{{item.keyword || '未知关键词'}}</text>
+            <view class="user-meta">
+              <text class="user-location">匹配时间 {{item.matched_at_display}}</text>
+            </view>
+            <text class="collision-status {{item.status_class}}">{{item.status_text}}</text>
+          </view>
+        </view>
+        <view class="user-actions">
+          <view
+            class="email-btn {{item.can_notify ? 'active' : 'disabled'}}"
+            bindtap="showEmailForm"
+            data-user="{{item}}"
+          >
+            <text class="btn-icon">📧</text>
+            <text class="btn-text">{{item.can_notify ? '发送邮件' : '暂不可发'}}</text>
+          </view>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 结果不为空时（搜索结果） -->
+  <view wx:elif="{{results.length > 0}}" class="results-section">
+    <view class="results-header">
+      <text class="results-count">🔍 找到 {{results.length}} 个匹配</text>
+      <text class="results-tip">点击发送邮件与他们联系</text>
+    </view>
+
+    <!-- 过期提示 -->
+    <view wx:if="{{expiredTip}}" class="expired-tip">
+      <text class="tip-icon">⚠️</text>
+      <text class="tip-text">{{expiredTip}}</text>
+    </view>
+
+    <!-- 匹配用户列表（搜索结果） -->
+    <scroll-view class="user-list" scroll-y>
+      <view wx:for="{{results}}" wx:key="id" class="user-item">
+        <view class="user-info">
+          <image class="user-avatar" src="{{item.avatar || '/images/default-avatar.png'}}" mode="aspectFill"></image>
+          <view class="user-details">
+            <text class="user-nickname">{{item.nickname || '匿名用户'}}</text>
+            <view class="user-meta">
+              <text class="user-location" wx:if="{{item.location}}">📍 {{item.location}}</text>
+              <text class="user-gender">{{item.user_gender === 1 ? '👨 男' : item.user_gender === 2 ? '👩 女' : '❓ 未知'}}</text>
+            </view>
+            <text class="user-time">发布于 {{item.created_at_display || item.created_at}}</text>
+            <text class="collision-status {{item.status_class}}">{{item.status_text}}</text>
+          </view>
+        </view>
+        <view class="user-actions">
+          <view
+            class="email-btn {{item.can_notify ? 'active' : 'disabled'}}"
+            bindtap="showEmailForm"
+            data-user="{{item}}"
+          >
+            <text class="btn-icon">📧</text>
+            <text class="btn-text">{{item.can_notify ? '发送邮件' : '暂不可发'}}</text>
+          </view>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 加载状态 -->
+  <view wx:if="{{loading}}" class="loading-state">
+    <text class="loading-icon">⏳</text>
+    <text class="loading-text">{{mode === 'result' ? '加载中...' : '搜索中...'}}</text>
+  </view>
+</view>
+
+<!-- 发送邮件弹窗 -->
+<view wx:if="{{showEmailForm}}" class="email-modal">
+  <view class="modal-mask" bindtap="cancelEmail"></view>
+  <view class="email-form">
+    <view class="form-header">
+      <text class="form-title">📧 发送邮件</text>
+      <text class="form-subtitle">发送给 {{selectedUser.keyword || selectedUser.nickname || '匹配用户'}}</text>
+      <view class="close-btn" bindtap="cancelEmail">✕</view>
+    </view>
+
+    <view class="form-content">
+      <view class="form-item">
+        <text class="form-label">邮件内容</text>
+        <textarea
+          class="message-input"
+          placeholder="请输入邮件内容，介绍一下自己吧~"
+          value="{{emailMessage}}"
+          bindinput="onEmailMessageInput"
+          maxlength="500"
+          auto-height
+        ></textarea>
+        <text class="input-counter">{{emailMessage.length}}/500</text>
+      </view>
+
+      <view class="cost-info">
+        <text class="cost-label">💰 发送邮件将消耗 1 个碰撞币</text>
+      </view>
+    </view>
+
+    <view class="form-actions">
+      <button class="cancel-btn" bindtap="cancelEmail">取消</button>
+      <button
+        class="submit-btn {{canSubmitEmail ? 'active' : 'disabled'}}"
+        bindtap="submitEmail"
+        disabled="{{!canSubmitEmail || submitting}}"
+      >
+        {{submitting ? '发送中...' : '发送邮件'}}
+      </button>
+    </view>
+  </view>
+</view>
