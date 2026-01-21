@@ -1,0 +1,19 @@
+<!--pages/collision/collision.wxml-->
+<view class="container">
+  <view class="collision-section">
+    <view class="section-title">开始碰撞</view>
+    <view class="collision-form">
+      <input class="collision-input" placeholder="输入碰撞码" value="{{inputCode}}" bindinput="onInputChange" />
+      <button class="collision-btn" bindtap="startCollision" disabled="{{!inputCode}}">开始碰撞</button>
+    </view>
+  </view>
+  
+  <view class="generate-section">
+    <view class="section-title">生成碰撞码</view>
+    <button class="generate-btn" bindtap="generateCode">生成我的碰撞码</button>
+    <view class="current-code" wx:if="{{currentCode}}">
+      <text>{{currentCode}}</text>
+      <button class="copy-btn" bindtap="copyCode">复制</button>
+    </view>
+  </view>
+</view>
