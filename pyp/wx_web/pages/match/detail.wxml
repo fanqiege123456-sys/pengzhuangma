@@ -1,0 +1,24 @@
+<view class="detail-container">
+  <view class="partner-card">
+    <image class="avatar" src="{{match.partner.avatar}}" mode="aspectFill" />
+    <view class="partner-info">
+      <text class="nickname">{{match.partner.nickname}}</text>
+      <text class="meta">性别：{{match.partner.gender === 1 ? '男' : (match.partner.gender === 2 ? '女' : '未知')}} • 年龄：{{match.partner.age || '未知'}}</text>
+      <text class="location">地区：{{match.match_location_text}}</text>
+    </view>
+  </view>
+
+  <view class="match-meta">
+    <view class="tag">🏷️ {{match.tag}}</view>
+    <view class="match-type">匹配类型：{{match.match_type}}</view>
+    <view class="created">匹配时间：{{match.created_at}}</view>
+    <view class="deadline">加好友截止：{{match.add_friend_deadline}}</view>
+    <view class="time-left">状态：{{match.time_status}}  {{match.time_left_text}}</view>
+  </view>
+
+  <view class="actions">
+    <button wx:if="{{match.status === 'matched' && match.time_status === 'active'}}" class="btn-add" bindtap="handleAddFriend">添加好友</button>
+    <button wx:if="{{match.time_status === 'expired' && match.can_force_add}}" class="btn-force" bindtap="handleForceAdd">强制添加（100积分）</button>
+    <button class="btn-copy" bindtap="handleCopyWechat">复制微信号</button>
+  </view>
+</view>
