@@ -1,0 +1,108 @@
+﻿<!--pages/normal-collision/normal-collision.wxml-->
+<view class="container">
+  <!-- 顶部背景区域 -->
+  <view class="header-bg">
+    <view class="header-decoration">
+      <view class="circle circle-1"></view>
+      <view class="circle circle-2"></view>
+      <view class="circle circle-3"></view>
+    </view>
+    <view class="header-content">
+      <text class="title">🔥 我的匹配结果</text>
+      <text class="subtitle">按关键词分组查看匹配</text>
+    </view>
+    <!-- 发起碰撞入口 -->
+    <view class="action-entry">
+      <view class="action-btn-start" bindtap="goToStartCollision">
+        <text class="action-icon">✨</text>
+        <text>发起碰撞</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 匹配结果列表 -->
+  <view class="sparks-section">
+    <view class="section-header">
+      <text class="section-title">📅 最近30天匹配</text>
+      <text class="section-count">共{{total}}条</text>
+    </view>
+
+    <scroll-view wx:if="{{groups.length > 0}}" class="sparks-scroll" scroll-y>
+      <view class="sparks-list">
+        <view wx:for="{{groups}}" wx:key="id" class="group-item">
+          <view class="group-header" bindtap="toggleGroup" data-id="{{item.id}}">
+            <view class="group-info">
+              <text class="group-title">{{item.keyword || '未知关键词'}}</text>
+              <text class="group-meta">匹配{{item.total}}人 · {{item.date}}</text>
+            </view>
+            <text class="group-toggle">{{item.expanded ? '收起' : '展开'}}</text>
+          </view>
+
+          <view wx:if="{{item.expanded}}" class="match-list">
+            <view wx:for="{{item.matches}}" wx:key="id" class="match-item">
+              <view class="match-info">
+                <text class="match-label">匹配时间：</text>
+                <text class="match-time">{{item.matched_at_display}}</text>
+              </view>
+              <view class="match-footer">
+                <text class="match-status {{item.status_class}}">{{item.status_text}}</text>
+                <view class="match-btn" bindtap="showEmailForm" data-item="{{item}}">发送邮件</view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </scroll-view>
+
+    <!-- 空状态 -->
+    <view wx:else class="empty-state">
+      <text class="empty-icon">🔍</text>
+      <text class="empty-title">暂无匹配结果</text>
+      <text class="empty-desc">匹配成功后会在这里显示</text>
+      <view class="empty-btn" bindtap="goToStartCollision">发起碰撞</view>
+    </view>
+  </view>
+</view>
+
+<!-- 发送邮件弹窗 -->
+<view wx:if="{{showEmailForm}}" class="email-modal">
+  <view class="modal-mask" bindtap="cancelEmail"></view>
+  <view class="email-form">
+    <view class="form-header">
+      <text class="form-title">📧 发送邮件</text>
+      <text class="form-subtitle">发送给匹配用户</text>
+      <view class="close-btn" bindtap="cancelEmail">✕</view>
+    </view>
+
+    <view class="form-content">
+      <view class="form-item">
+        <text class="form-label">邮件内容</text>
+        <textarea
+          class="message-input"
+          placeholder="请输入邮件内容"
+          value="{{emailMessage}}"
+          bindinput="onEmailMessageInput"
+          maxlength="500"
+          auto-height
+        ></textarea>
+        <text class="input-counter">{{emailMessage.length}}/500</text>
+      </view>
+
+      <view class="cost-info">
+        <text class="cost-label">💰 发送邮件将消耗 1 个碰撞币</text>
+      </view>
+    </view>
+
+    <view class="form-actions">
+      <view class="cancel-btn" bindtap="cancelEmail">取消</view>
+      <view
+        wx:if="{{canSubmitEmail}}"
+        class="submit-btn active"
+        bindtap="submitEmail"
+      >
+        {{submitting ? '发送中...' : '发送邮件'}}
+      </view>
+      <view wx:else class="submit-btn disabled">发送邮件</view>
+    </view>
+  </view>
+</view>
