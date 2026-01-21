@@ -1,0 +1,145 @@
+/**pages/match/match.wxss**/
+.status-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  text-align: center;
+  padding: 60rpx 30rpx;
+  border-radius: 16rpx;
+  margin-bottom: 30rpx;
+}
+
+.status-icon {
+  font-size: 100rpx;
+  margin-bottom: 20rpx;
+}
+
+.status-text {
+  font-size: 36rpx;
+  font-weight: bold;
+  margin-bottom: 30rpx;
+}
+
+.collision-code-display {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50rpx;
+  padding: 20rpx 40rpx;
+  display: inline-block;
+}
+
+.collision-code-display .code {
+  font-size: 48rpx;
+  font-weight: bold;
+}
+
+.users-card {
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 40rpx 30rpx;
+  margin-bottom: 30rpx;
+  box-shadow: 0 2rpx 20rpx rgba(0, 0, 0, 0.05);
+}
+
+.user-section {
+  display: flex;
+  align-items: center;
+  margin-bottom: 30rpx;
+}
+
+.user-section:last-child {
+  margin-bottom: 0;
+}
+
+.user-avatar-large {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 60rpx;
+  margin-right: 30rpx;
+}
+
+.user-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+}
+
+.user-name {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.user-wechat {
+  font-size: 28rpx;
+  color: #007AFF;
+}
+
+.user-region,
+.user-age {
+  font-size: 26rpx;
+  color: #666;
+}
+
+.vs-divider {
+  text-align: center;
+  margin: 30rpx 0;
+}
+
+.vs-text {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #007AFF;
+}
+
+.time-card {
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 30rpx;
+  margin-bottom: 30rpx;
+  box-shadow: 0 2rpx 20rpx rgba(0, 0, 0, 0.05);
+}
+
+.time-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.time-item:last-child {
+  margin-bottom: 0;
+}
+
+.time-label {
+  font-size: 28rpx;
+  color: #666;
+}
+
+.time-value {
+  font-size: 28rpx;
+  color: #333;
+}
+
+.time-value.deadline {
+  color: #FF3B30;
+  font-weight: bold;
+}
+
+.actions {
+  display: flex;
+  gap: 20rpx;
+  margin-top: 40rpx;
+}
+
+.actions .btn-secondary,
+.actions .btn-primary {
+  flex: 1;
+  margin: 0;
+}
+
+.loading {
+  text-align: center;
+  padding: 100rpx 0;
+  font-size: 28rpx;
+  color: #666;
+}
