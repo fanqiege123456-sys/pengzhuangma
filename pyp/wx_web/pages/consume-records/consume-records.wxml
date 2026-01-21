@@ -1,0 +1,103 @@
+<!--pages/consume-records/consume-records.wxml-->
+<view class="container">
+  <!-- 头部 -->
+  <view class="header">
+    <view class="header-decoration">
+      <view class="circle circle-1"></view>
+      <view class="circle circle-2"></view>
+    </view>
+    <view class="header-content">
+      <text class="title">💰 消费记录</text>
+      <text class="subtitle">查看积分消费明细</text>
+    </view>
+  </view>
+
+  <!-- Tab切换 -->
+  <view class="tabs">
+    <view class="tab {{currentTab === 'consume' ? 'active' : ''}}" bindtap="switchTab" data-tab="consume">
+      消费记录
+    </view>
+    <view class="tab {{currentTab === 'recharge' ? 'active' : ''}}" bindtap="switchTab" data-tab="recharge">
+      充值记录
+    </view>
+  </view>
+
+  <!-- 消费记录列表 -->
+  <view class="records-section" wx:if="{{currentTab === 'consume'}}">
+    <block wx:if="{{consumeList && consumeList.length}}">
+      <scroll-view 
+        class="records-scroll" 
+        scroll-y 
+        bindscrolltolower="loadMoreConsume"
+      >
+        <view class="records-list">
+          <view wx:for="{{consumeList}}" wx:key="id" class="record-item">
+            <view class="record-left">
+              <view class="record-icon {{item.amount_display > 0 ? 'refund' : 'consume'}}">
+                <text>{{item.amount_display > 0 ? '+' : '-'}}</text>
+              </view>
+              <view class="record-info">
+                <text class="record-reason">{{item.reason}}</text>
+                <text class="record-time">{{item.created_at_display}}</text>
+              </view>
+            </view>
+            <view class="record-right">
+              <text class="record-coins {{item.amount_display > 0 ? 'refund' : 'consume'}}">
+                {{item.amount_display > 0 ? '+' : ''}}{{item.amount_display}}
+              </text>
+              <text class="record-type">{{item.type_display}}</text>
+            </view>
+          </view>
+        </view>
+        <view class="load-more">
+          <text wx:if="{{consumeLoading}}">加载中...</text>
+          <text wx:elif="{{!consumeHasMore}}">没有更多了</text>
+        </view>
+      </scroll-view>
+    </block>
+    <view wx:else class="empty-state">
+      <text class="empty-icon">📝</text>
+      <text class="empty-title">暂无消费记录</text>
+      <text class="empty-desc">发起碰撞后会产生消费记录</text>
+    </view>
+  </view>
+
+  <!-- 充值记录列表 -->
+  <view class="records-section" wx:if="{{currentTab === 'recharge'}}">
+    <block wx:if="{{rechargeList && rechargeList.length}}">
+      <scroll-view 
+        class="records-scroll" 
+        scroll-y 
+        bindscrolltolower="loadMoreRecharge"
+      >
+        <view class="records-list">
+          <view wx:for="{{rechargeList}}" wx:key="id" class="record-item recharge">
+            <view class="record-left">
+              <view class="record-icon recharge">
+                <text>+</text>
+              </view>
+              <view class="record-info">
+                <text class="record-reason">充值 ¥{{item.amount_display}}</text>
+                <text class="record-time">{{item.created_at_display}}</text>
+                <text class="record-order">订单号：{{item.order_no}}</text>
+              </view>
+            </view>
+            <view class="record-right">
+              <text class="record-coins recharge">+{{item.coins}}</text>
+              <view class="record-status {{item.status}}">{{item.status_display}}</view>
+            </view>
+          </view>
+        </view>
+        <view class="load-more">
+          <text wx:if="{{rechargeLoading}}">加载中...</text>
+          <text wx:elif="{{!rechargeHasMore}}">没有更多了</text>
+        </view>
+      </scroll-view>
+    </block>
+    <view wx:else class="empty-state">
+      <text class="empty-icon">💳</text>
+      <text class="empty-title">暂无充值记录</text>
+      <text class="empty-desc">充值后会显示在这里</text>
+    </view>
+  </view>
+</view>
