@@ -1,0 +1,53 @@
+/* pages/match/detail.wxss */
+.detail-container {
+  padding: 40rpx;
+  background: #f8f8f8;
+  min-height: 100vh;
+}
+.partner-card {
+  display: flex;
+  gap: 20rpx;
+  padding: 30rpx;
+  background: white;
+  border-radius: 12rpx;
+  align-items: center;
+  margin-bottom: 30rpx;
+}
+.avatar {
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 12rpx;
+}
+.partner-info {
+  flex: 1;
+}
+.nickname {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+}
+.meta {
+  font-size: 26rpx;
+  color: #666;
+  margin-top: 10rpx;
+}
+.match-meta {
+  background: white;
+  padding: 30rpx;
+  border-radius: 12rpx;
+  margin-bottom: 30rpx;
+}
+.actions {
+  display: flex;
+  gap: 20rpx;
+}
+.btn-add, .btn-force, .btn-copy {
+  flex: 1;
+  height: 88rpx;
+  line-height: 88rpx;
+  border-radius: 12rpx;
+  font-size: 30rpx;
+}
+.btn-add { background: linear-gradient(90deg,#4CAF50,#2E8B57); color: #fff; }
+.btn-force { background: linear-gradient(90deg,#FF7043,#FF5722); color: #fff; }
+.btn-copy { background: #f0f0f0; color: #333; }
