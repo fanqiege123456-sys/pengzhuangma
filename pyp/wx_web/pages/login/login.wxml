@@ -1,0 +1,33 @@
+﻿<!--pages/login/login.wxml-->
+<view class="login-container">
+  <!-- 应用logo和标题 -->
+  <view class="header">
+    <image class="logo" src="/images/logo.png" mode="aspectFit"></image>
+    <text class="app-title">碰撞小程序</text>
+    <text class="app-desc">发现有趣的灵魂，开启奇妙之旅</text>
+  </view>
+
+  <!-- 登录按钮区域 -->
+  <view class="login-buttons">
+    <button
+      class="login-btn primary"
+      bindtap="handleLogin"
+    >
+      <image class="btn-icon" src="/images/wechat-icon.png"></image>
+      微信授权登录
+    </button>
+
+    
+  </view>
+
+  <!-- 用户协议 -->
+  <view class="agreement">
+    <text>登录即表示同意</text>
+    <text class="link">《用户协议》</text>
+    <text>和</text>
+    <text class="link">《隐私政策》</text>
+  </view>
+  <view class="login-tip">
+    <text>手机号绑定为可选，可在个人中心手动绑定。</text>
+  </view>
+</view>
