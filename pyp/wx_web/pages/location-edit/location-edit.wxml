@@ -1,0 +1,51 @@
+<!--pages/location-edit/location-edit.wxml-->
+<view class="container">
+  <view class="form-section">
+    <!-- 地址标签 -->
+    <view class="form-item">
+      <text class="form-label">标签</text>
+      <view class="label-selector">
+        <view 
+          wx:for="{{labelOptions}}" 
+          wx:key="value"
+          class="label-option {{label === item.value ? 'active' : ''}}"
+          bindtap="selectLabel"
+          data-value="{{item.value}}"
+        >
+          <text class="label-icon">{{item.icon}}</text>
+          <text class="label-name">{{item.text}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 地区选择 -->
+    <view class="form-item">
+      <text class="form-label">地区</text>
+      <picker 
+        mode="region" 
+        value="{{region}}"
+        bindchange="onRegionChange"
+      >
+        <view class="picker-display">
+          <text class="picker-text">{{regionText || '请选择地区'}}</text>
+          <text class="picker-arrow">></text>
+        </view>
+      </picker>
+    </view>
+
+    <!-- 设为默认 -->
+    <view class="form-item">
+      <text class="form-label">设为默认地址</text>
+      <switch 
+        checked="{{isDefault}}" 
+        bindchange="onDefaultChange"
+        color="#007AFF"
+      />
+    </view>
+  </view>
+
+  <!-- 保存按钮 -->
+  <view class="button-section">
+    <view class="save-btn" bindtap="saveLocation">保存</view>
+  </view>
+</view>
