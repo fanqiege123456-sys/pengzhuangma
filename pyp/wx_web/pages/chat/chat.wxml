@@ -1,0 +1,34 @@
+<!--pages/chat/chat.wxml-->
+<view class="container">
+  <!-- 聊天消息列表 -->
+  <scroll-view class="messages-scroll" scroll-y scroll-into-view="{{scrollToView}}" scroll-with-animation>
+    <view class="message-item" wx:for="{{messages}}" wx:key="id" id="msg-{{item.id}}">
+      <view class="message-wrapper {{item.sender_id === currentUserId ? 'sent' : 'received'}}">
+        <image class="message-avatar" src="{{item.avatar}}" wx:if="{{item.sender_id !== currentUserId}}" />
+        <view class="message-bubble {{item.sender_id === currentUserId ? 'sent' : 'received'}}">
+          <text class="message-text">{{item.content}}</text>
+        </view>
+        <image class="message-avatar" src="{{item.avatar}}" wx:if="{{item.sender_id === currentUserId}}" />
+      </view>
+      <view class="message-time">{{item.time}}</view>
+    </view>
+  </scroll-view>
+
+  <!-- 输入框 -->
+  <view class="input-section">
+    <view class="input-wrapper">
+      <input 
+        class="message-input" 
+        placeholder="输入消息..." 
+        value="{{inputText}}"
+        bindinput="onInputChange"
+        bindconfirm="sendMessage"
+        focus="{{inputFocus}}"
+        adjust-position="{{false}}"
+      />
+      <button class="send-btn {{inputText ? 'active' : ''}}" bindtap="sendMessage">
+        发送
+      </button>
+    </view>
+  </view>
+</view>
