@@ -1,0 +1,84 @@
+<!--pages/edit-profile/edit-profile.wxml-->
+<view class="container">
+  <view class="form-section">
+    <!-- 昵称 -->
+    <view class="form-item">
+      <text class="form-label">昵称</text>
+      <input 
+        class="form-input" 
+        placeholder="请输入昵称" 
+        value="{{nickname}}"
+        bindinput="onNicknameInput"
+        maxlength="20"
+      />
+    </view>
+
+    <!-- 性别 -->
+    <view class="form-item">
+      <text class="form-label">性别</text>
+      <view class="gender-selector">
+        <view 
+          class="gender-option {{gender === 1 ? 'active' : ''}}"
+          bindtap="selectGender"
+          data-gender="1"
+        >
+          <text>男</text>
+        </view>
+        <view 
+          class="gender-option {{gender === 2 ? 'active' : ''}}"
+          bindtap="selectGender"
+          data-gender="2"
+        >
+          <text>女</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 年龄 -->
+    <view class="form-item">
+      <text class="form-label">年龄</text>
+      <picker 
+        mode="selector" 
+        range="{{ageRange}}" 
+        value="{{ageIndex}}"
+        bindchange="onAgeChange"
+      >
+        <view class="picker-display">
+          <text class="picker-text">{{age || '请选择年龄'}}</text>
+          <text class="picker-arrow">></text>
+        </view>
+      </picker>
+    </view>
+
+    <!-- 个人简介 -->
+    <view class="form-item form-item-column">
+      <text class="form-label">个人简介</text>
+      <textarea 
+        class="form-textarea" 
+        placeholder="写点什么介绍一下自己吧..." 
+        value="{{bio}}"
+        bindinput="onBioInput"
+        maxlength="200"
+        show-confirm-bar="{{false}}"
+      />
+      <text class="char-count">{{bioLength}}/200</text>
+    </view>
+
+    <!-- 微信号 -->
+    <view class="form-item">
+      <text class="form-label">微信号</text>
+      <input 
+        class="form-input" 
+        placeholder="请输入微信号" 
+        value="{{wechatNo}}"
+        bindinput="onWechatNoInput"
+        maxlength="30"
+      />
+    </view>
+  </view>
+
+  <!-- 保存按钮 -->
+  <view class="button-section">
+    <view class="save-btn" bindtap="saveProfile">保存</view>
+  </view>
+</view>
