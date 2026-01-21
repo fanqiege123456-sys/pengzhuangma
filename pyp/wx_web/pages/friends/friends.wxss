@@ -1,0 +1,202 @@
+/**pages/friends/friends.wxss**/
+.search-section {
+  padding: 20rpx;
+  background: #fff;
+  margin-bottom: 20rpx;
+}
+
+.search-input {
+  background: #f5f5f5;
+  border-radius: 25rpx;
+  padding: 20rpx 30rpx;
+  font-size: 30rpx;
+}
+
+.friends-scroll {
+  flex: 1;
+}
+
+.friend-item {
+  background: #fff;
+  display: flex;
+  align-items: center;
+  padding: 30rpx 20rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.friend-item:last-child {
+  border-bottom: none;
+}
+
+.friend-avatar {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50rpx;
+  margin-right: 20rpx;
+}
+
+.friend-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+}
+
+.friend-name {
+  font-size: 32rpx;
+  color: #333;
+  font-weight: 500;
+}
+
+.friend-wechat {
+  font-size: 26rpx;
+  color: #007AFF;
+}
+
+.friend-region {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.friend-status {
+  margin-right: 20rpx;
+}
+
+.status-text {
+  font-size: 24rpx;
+  padding: 6rpx 12rpx;
+  border-radius: 12rpx;
+}
+
+.status-text.active {
+  background: #E8F5E8;
+  color: #34C759;
+}
+
+.status-text.blocked {
+  background: #FFE8E8;
+  color: #FF3B30;
+}
+
+.friend-actions {
+  padding: 10rpx;
+}
+
+.action-btn {
+  font-size: 36rpx;
+  color: #999;
+  transform: rotate(90deg);
+}
+
+.empty-state {
+  text-align: center;
+  padding: 120rpx 40rpx;
+}
+
+.empty-icon {
+  font-size: 120rpx;
+  display: block;
+  margin-bottom: 30rpx;
+}
+
+.empty-text {
+  font-size: 32rpx;
+  color: #666;
+  display: block;
+  margin-bottom: 20rpx;
+}
+
+.empty-desc {
+  font-size: 28rpx;
+  color: #999;
+  display: block;
+  margin-bottom: 40rpx;
+}
+
+.empty-action {
+  width: 200rpx;
+  margin: 0 auto;
+}
+
+/* 操作菜单样式 */
+.action-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: flex-end;
+  z-index: 1000;
+}
+
+.action-sheet {
+  width: 100%;
+  background: #fff;
+  border-radius: 20rpx 20rpx 0 0;
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.action-header {
+  text-align: center;
+  padding: 40rpx 30rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.action-avatar {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 40rpx;
+  display: block;
+  margin: 0 auto 20rpx;
+}
+
+.action-name {
+  font-size: 32rpx;
+  color: #333;
+  font-weight: 500;
+}
+
+.action-list {
+  padding: 0;
+}
+
+.action-item {
+  padding: 30rpx 40rpx;
+  border-bottom: 1rpx solid #f8f8f8;
+  text-align: center;
+}
+
+.action-item:last-child {
+  border-bottom: none;
+}
+
+.action-item.danger .action-text {
+  color: #FF3B30;
+}
+
+.action-text {
+  font-size: 32rpx;
+  color: #333;
+}
+
+.action-cancel {
+  padding: 30rpx;
+  text-align: center;
+  border-top: 20rpx solid #f8f8f8;
+}
+
+.cancel-text {
+  font-size: 32rpx;
+  color: #007AFF;
+}
