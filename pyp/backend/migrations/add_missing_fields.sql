@@ -1,0 +1,3 @@
+-- 添加缺失字段到 users 表
+ALTER TABLE users ADD COLUMN IF NOT EXISTS allow_force_add TINYINT(1) DEFAULT 0;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS allow_haidilao TINYINT(1) DEFAULT 0;
