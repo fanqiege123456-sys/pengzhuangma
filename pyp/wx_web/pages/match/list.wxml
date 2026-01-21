@@ -1,0 +1,88 @@
+<!--pages/match/list.wxml-->
+<view class="match-list-container">
+  <!-- 加载状态 -->
+  <view class="loading" wx:if="{{loading && matches.length === 0}}">
+    <view class="loading-icon">⏳</view>
+    <view class="loading-text">加载中...</view>
+  </view>
+
+  <!-- 匹配列表 -->
+  <view class="matches-list" wx:if="{{!loading || matches.length > 0}}">
+    <view 
+      class="match-item" 
+      wx:for="{{matches}}" 
+      wx:key="id"
+      bindtap="viewDetail"
+      data-id="{{item.id}}"
+    >
+      <!-- 用户信息 -->
+      <view class="match-header">
+        <image class="avatar" src="{{item.partner.avatar}}" mode="aspectFill" />
+        <view class="match-info">
+          <view class="partner-info">
+            <text class="nickname">{{item.partner.nickname}}</text>
+            <view class="status-badge status-{{item.status}}">
+              <text wx:if="{{item.status === 'matched'}}">✅ 已匹配</text>
+              <text wx:elif="{{item.status === 'friend_added'}}">🎉 已添加</text>
+              <text wx:else>⏰ 已错过</text>
+            </view>
+          </view>
+          <view class="match-tag">🏷️ {{item.tag}}</view>
+          <view class="match-location">📍 {{item.matchLocation}}</view>
+        </view>
+      </view>
+
+      <!-- 时间信息 -->
+      <view class="match-footer">
+        <view class="time-info">
+          <text class="time-label">匹配时间：</text>
+          <text class="time-value">{{item.createdAt}}</text>
+        </view>
+        <view class="deadline-info" wx:if="{{item.status === 'matched'}}">
+          <text class="deadline-label">⏱️ </text>
+          <text class="deadline-value {{item.isExpired ? 'expired' : ''}}">
+            {{item.timeLeft}}
+          </text>
+        </view>
+      </view>
+
+      <!-- 操作按钮 -->
+      <view class="match-actions" catchtap="stopPropagation">
+        <!-- 正常添加好友 -->
+        <button 
+          wx:if="{{item.status === 'matched' && !item.isExpired}}"
+          class="btn-copy"
+          catchtap="copyWechat"
+          data-wechat="{{item.partner.wechat_no}}"
+        >
+          复制微信号
+        </button>
+        
+        <!-- 强制添加好友 -->
+        <button 
+          wx:if="{{item.canForceAdd}}"
+          class="btn-force"
+          catchtap="forceAddFriend"
+          data-id="{{item.id}}"
+        >
+          强制添加（100积分）
+        </button>
+        
+        <!-- 已添加状态 -->
+        <view wx:if="{{item.status === 'friend_added'}}" class="added-tip">
+          ✅ 已成为好友
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty-state" wx:if="{{!loading && matches.length === 0}}">
+    <view class="empty-icon">💔</view>
+    <view class="empty-text">还没有匹配记录</view>
+    <view class="empty-desc">去碰撞页面发起碰撞吧！</view>
+    <button class="btn-primary" bindtap="goToCollision">
+      立即碰撞
+    </button>
+  </view>
+</view>
