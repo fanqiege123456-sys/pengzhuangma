@@ -1,0 +1,92 @@
+﻿<!--pages/collision/collision.wxml-->
+<view class="container">
+  <!-- 头部 -->
+  <view class="header">
+    <view class="header-decoration">
+      <view class="circle circle-1"></view>
+      <view class="circle circle-2"></view>
+      <view class="circle circle-3"></view>
+    </view>
+    <view class="header-content">
+      <text class="title">✨ 发起碰撞</text>
+      <text class="subtitle">输入关键词，寻找志同道合的人</text>
+    </view>
+  </view>
+
+  <!-- 关键词输入卡片 -->
+  <view class="card keyword-card">
+    <view class="section-title">🏷️ 碰撞关键词</view>
+    <input 
+      class="keyword-input {{inputShake ? 'shake-animation' : ''}}" 
+      placeholder="输入关键词，如：程序员、旅游、美食..." 
+      value="{{inputTag}}"
+      bindinput="onTagInput"
+      maxlength="50"
+      focus="{{autoFocus}}"
+    />
+    
+    <!-- 热门标签 -->
+    <view wx:if="{{hotTags.length > 0}}" class="hot-tags-section">
+      <text class="hot-tags-label">热门标签：</text>
+      <view class="hot-tags">
+        <view 
+          wx:for="{{hotTags}}" 
+          wx:key="keyword"
+          wx:if="{{index < 6}}"
+          class="hot-tag"
+          bindtap="selectHotTag"
+          data-tag="{{item.keyword || item.tag}}"
+        >
+          {{item.keyword || item.tag}}
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 消耗积分提示 -->
+  <view class="cost-card">
+    <view class="cost-info">
+      <text class="cost-label">消耗积分</text>
+      <text class="cost-value">10</text>
+    </view>
+    <text class="cost-tip">碰撞成功后，系统会通过邮件通知您</text>
+  </view>
+
+  <!-- 审核说明 -->
+  <view class="audit-rule-card">
+    <view class="audit-rule-title">说明</view>
+    <view class="audit-rule-content">
+      <text>碰撞码提交后立即参与匹配；审核仅影响首页展示。</text>
+    </view>
+  </view>
+
+  <!-- 发起碰撞按钮 -->
+  <view class="action-section">
+    <view class="collision-btn" bindtap="startCollision">
+      🚀 开始碰撞
+    </view>
+  </view>
+
+  <!-- 使用说明 -->
+  <view class="tips-card">
+    <view class="tips-title">💡 使用说明</view>
+    <view class="tips-list">
+      <view class="tip-item">
+        <text class="tip-num">1</text>
+        <text class="tip-text">输入您感兴趣的关键词</text>
+      </view>
+      <view class="tip-item">
+        <text class="tip-num">2</text>
+        <text class="tip-text">系统自动匹配相同关键词的用户</text>
+      </view>
+      <view class="tip-item">
+        <text class="tip-num">3</text>
+        <text class="tip-text">匹配成功后通过邮件通知双方</text>
+      </view>
+      <view class="tip-item">
+        <text class="tip-num">4</text>
+        <text class="tip-text">在碰撞结果中查看匹配用户</text>
+      </view>
+    </view>
+  </view>
+</view>
