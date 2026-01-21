@@ -1,0 +1,211 @@
+/* pages/collision/collision.wxss */
+.collision-container {
+  padding: 40rpx;
+  background-color: #f5f5f5;
+  min-height: 100vh;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 60rpx;
+}
+
+.title {
+  display: block;
+  font-size: 48rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20rpx;
+}
+
+.subtitle {
+  display: block;
+  font-size: 28rpx;
+  color: #666;
+}
+
+.input-section,
+.location-section,
+.gender-section,
+.hot-tags-section {
+  background: white;
+  border-radius: 20rpx;
+  padding: 40rpx;
+  margin-bottom: 30rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.05);
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 30rpx;
+}
+
+.collision-input {
+  width: 100%;
+  height: 100rpx;
+  line-height: 100rpx;
+  border: 2rpx solid #e0e0e0;
+  border-radius: 12rpx;
+  padding: 0 20rpx;
+  font-size: 32rpx;
+  background: #fafafa;
+  box-sizing: border-box;
+}
+
+.collision-input:focus {
+  border-color: #07c160;
+  background: white;
+}
+
+.location-grid {
+  display: flex;
+  gap: 20rpx;
+  margin-bottom: 30rpx;
+}
+
+.picker-item {
+  flex: 1;
+  height: 80rpx;
+  border: 2rpx solid #e0e0e0;
+  border-radius: 12rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20rpx;
+  background: #fafafa;
+  font-size: 28rpx;
+  color: #666;
+}
+
+.arrow {
+  color: #999;
+  font-size: 32rpx;
+}
+
+.match-options {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.option-item {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+  font-size: 28rpx;
+  color: #333;
+}
+
+.gender-options {
+  display: flex;
+  gap: 40rpx;
+}
+
+.gender-item {
+  display: flex;
+  align-items: center;
+  gap: 15rpx;
+  font-size: 28rpx;
+  color: #333;
+}
+
+.collision-btn {
+  width: 100%;
+  height: 88rpx;
+  background: linear-gradient(135deg, #07c160, #05a650);
+  color: white;
+  border: none;
+  border-radius: 44rpx;
+  font-size: 32rpx;
+  font-weight: bold;
+  margin: 40rpx 0;
+  box-shadow: 0 8rpx 20rpx rgba(7, 193, 96, 0.3);
+}
+
+.collision-btn:active {
+  background: linear-gradient(135deg, #05a650, #048a47);
+  transform: translateY(2rpx);
+}
+
+.tags-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20rpx;
+}
+
+.tag-item {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  padding: 20rpx 30rpx;
+  border-radius: 25rpx;
+  font-size: 24rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 120rpx;
+  box-shadow: 0 4rpx 12rpx rgba(102, 126, 234, 0.3);
+}
+
+.tag-item:active {
+  transform: scale(0.95);
+}
+
+.tag-text {
+  font-weight: bold;
+  margin-bottom: 8rpx;
+}
+
+.tag-count {
+  font-size: 20rpx;
+  opacity: 0.8;
+}
+/* 海底捞样式 */
+.haidilao-section {
+  background: linear-gradient(135deg, #ff6b6b, #ff8e53);
+  border-radius: 20rpx;
+  padding: 40rpx;
+  margin: 30rpx 0;
+  box-shadow: 0 8rpx 20rpx rgba(255, 107, 107, 0.3);
+}
+
+.haidilao-info {
+  display: flex;
+  flex-direction: column;
+  gap: 15rpx;
+  margin-bottom: 30rpx;
+}
+
+.haidilao-title {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: white;
+}
+
+.haidilao-desc {
+  font-size: 28rpx;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.haidilao-cost {
+  font-size: 24rpx;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.haidilao-btn {
+  width: 100%;
+  height: 80rpx;
+  background: white;
+  color: #ff6b6b;
+  border: none;
+  border-radius: 40rpx;
+  font-size: 32rpx;
+  font-weight: bold;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.1);
+}
+
+.haidilao-btn:active {
+  background: rgba(255, 255, 255, 0.9);
+  transform: translateY(2rpx);
+}
