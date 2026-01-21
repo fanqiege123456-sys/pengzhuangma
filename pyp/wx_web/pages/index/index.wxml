@@ -1,0 +1,95 @@
+<!--pages/index/index.wxml-->
+<scroll-view class="scrollarea" scroll-y type="list">
+  <view class="index-container">
+    <!-- 页面标题 -->
+    <view class="page-title-section">
+      <text class="page-title">碰撞码</text>
+    </view>
+
+    <!-- 搜索框区域 -->
+    <view class="search-section">
+      <view class="search-box {{searchShake ? 'shake-animation' : ''}}">
+        <input 
+          class="search-input" 
+          placeholder="输入关键词搜索或碰撞" 
+          value="{{keyword}}"
+          bindinput="onKeywordInput"
+          confirm-type="search"
+          bindconfirm="searchKeyword"
+          maxlength="130"
+        />
+        <button class="search-btn" bindtap="onSearchTap">🔍</button>
+      </view>
+    </view>
+
+    <!-- 24小时热门 -->
+    <view class="hot-section">
+      <view class="section-header">
+        <text class="section-title">📊 24小时热门</text>
+        <text class="section-tip">点击标签快速碰撞</text>
+      </view>
+      <view class="hot-list">
+        <view 
+          wx:for="{{hotTags24h}}" 
+          wx:key="keyword"
+          class="hot-item hot-24h"
+          bindtap="selectHotTag"
+          data-keyword="{{item.keyword}}"
+        >
+          <text class="rank-badge">{{item.rank}}</text>
+          <text class="keyword">{{item.keyword}}</text>
+          <text class="count">{{item.count}}次</text>
+        </view>
+      </view>
+      <view wx:if="{{hotTags24h.length === 0}}" class="empty-tip">
+        暂无热门标签
+      </view>
+    </view>
+
+    <!-- 总榜 -->
+    <view class="hot-section">
+      <view class="section-header">
+        <text class="section-title">🏆 总榜</text>
+        <text class="section-tip">历史最热门标签</text>
+      </view>
+      <view class="hot-list">
+        <view 
+          wx:for="{{hotTagsAll}}" 
+          wx:key="keyword"
+          class="hot-item hot-all"
+          bindtap="selectHotTag"
+          data-keyword="{{item.keyword}}"
+        >
+          <text class="rank-badge rank-{{item.rank}}">{{item.rank}}</text>
+          <text class="keyword">{{item.keyword}}</text>
+          <text class="count">{{item.count}}次</text>
+        </view>
+      </view>
+      <view wx:if="{{hotTagsAll.length === 0}}" class="empty-tip">
+        暂无热门标签
+      </view>
+    </view>
+
+    <!-- 使用提示 - 仅未登录时显示 -->
+    <view class="usage-tips" wx:if="{{showLoginBtn}}">
+      <view class="tip-card">
+        <text class="tip-icon">💡</text>
+        <view class="tip-content">
+          <text class="tip-title">如何使用碰撞?</text>
+          <text class="tip-desc">1. 输入关键词或选择热门标签</text>
+          <text class="tip-desc">2. 系统自动匹配相同关键词的用户</text>
+          <text class="tip-desc">3. 匹配成功后通过邮件通知双方</text>
+          <text class="tip-desc">4. 在碰撞结果中标记"已知"</text>
+        </view>
+      </view>
+      
+      <!-- 登录引导 -->
+      <view class="login-guide-card">
+        <text class="guide-text">登录后体验完整功能</text>
+        <button class="login-btn-primary" bindtap="handleLogin">
+          立即登录
+        </button>
+      </view>
+    </view>
+  </view>
+</scroll-view>
