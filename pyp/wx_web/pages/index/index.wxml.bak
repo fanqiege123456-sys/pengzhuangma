@@ -1,0 +1,127 @@
+<!--pages/index/index.wxml-->
+<scroll-view class="scrollarea" scroll-y type="list">
+  <view class="container">
+    <!-- 游客模式 - 功能介绍 -->
+    <view wx:if="{{!userInfo}}">
+      <!-- 欢迎横幅 -->
+      <view class="card welcome-banner">
+        <view class="banner-title">🎯 碰撞交友小程序</view>
+        <view class="banner-desc">有趣的灵魂终会相遇</view>
+      </view>
+
+      <!-- 功能介绍 -->
+      <view class="card feature-intro">
+        <view class="section-title">✨ 核心功能</view>
+        
+        <view class="feature-item">
+          <view class="feature-icon">💝</view>
+          <view class="feature-content">
+            <view class="feature-title">交友碰撞</view>
+            <view class="feature-desc">设置兴趣标签和筛选条件，与志同道合的人碰撞相遇</view>
+          </view>
+        </view>
+
+        <view class="feature-item">
+          <view class="feature-icon">🔍</view>
+          <view class="feature-content">
+            <view class="feature-title">普通碰撞</view>
+            <view class="feature-desc">根据碰撞码搜索，快速找到感兴趣的人</view>
+          </view>
+        </view>
+
+        <view class="feature-item">
+          <view class="feature-icon">📍</view>
+          <view class="feature-content">
+            <view class="feature-title">批量碰撞</view>
+            <view class="feature-desc">一次生成多地区多条件组合，高效匹配</view>
+          </view>
+        </view>
+
+        <view class="feature-item">
+          <view class="feature-icon">👥</view>
+          <view class="feature-content">
+            <view class="feature-title">好友管理</view>
+            <view class="feature-desc">查看匹配记录，添加好友，开始聊天</view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 登录引导 -->
+      <view class="card login-guide">
+        <view class="guide-text">体验更多精彩功能</view>
+        <button class="login-btn-primary" bindtap="handleLogin" type="primary">
+          立即登录
+        </button>
+        <view class="login-tip">💡 点击登录后可完善个人资料，开启碰撞之旅</view>
+      </view>
+    </view>
+
+    <!-- 欢迎信息 -->
+    <view class="card welcome-card" wx:if="{{userInfo}}">
+      <view class="welcome-message">{{welcomeMessage}}</view>
+      <view class="user-info">
+        <view class="info-item">
+          <text class="label">用户昵称：</text>
+          <text class="value">{{userInfo.nickname || '未设置'}}</text>
+        </view>
+        <view class="info-item">
+          <text class="label">积分余额：</text>
+          <text class="value">{{userInfo.coins || 0}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 快速操作 -->
+    <view class="card" wx:if="{{userInfo}}">
+      <view class="section-title">快速操作</view>
+      <view class="quick-actions">
+        <button class="action-btn" bindtap="goToCollision">
+          <view class="action-icon">💝</view>
+          <view class="action-text">交友碰撞</view>
+        </button>
+        <button class="action-btn" bindtap="goToMatches">
+          <view class="action-icon">�</view>
+          <view class="action-text">我的匹配</view>
+        </button>
+        <button class="action-btn" bindtap="goToSettings">
+          <view class="action-icon">⚙️</view>
+          <view class="action-text">个人设置</view>
+        </button>
+      </view>
+    </view>
+
+    <!-- 最近匹配记录 -->
+    <view class="card" wx:if="{{recentCollisions.length > 0}}">
+      <view class="section-title">最近匹配</view>
+      <view class="collisions-list">
+        <view class="collision-item" wx:for="{{recentCollisions}}" wx:key="id" bindtap="goToMatchDetail" data-id="{{item.id}}">
+          <view class="collision-header">
+            <image class="avatar" src="{{item.partnerAvatar}}" mode="aspectFill" />
+            <view class="collision-info">
+              <view class="partner-name">{{item.partner}}</view>
+              <view class="collision-tag">标签：{{item.tag}}</view>
+              <view class="collision-time">{{item.time}}</view>
+            </view>
+          </view>
+          <view class="collision-status status-{{item.status}}">
+            <text wx:if="{{item.status === 'matched'}}">✅ 已匹配</text>
+            <text wx:elif="{{item.status === 'friend_added'}}">🎉 已添加好友</text>
+            <text wx:else>⏰ 待处理</text>
+          </view>
+        </view>
+      </view>
+      <view class="more-btn" bindtap="goToMatches">
+        查看全部匹配
+      </view>
+    </view>
+
+    <!-- 空状态提示 -->
+    <view class="card empty-state" wx:if="{{recentCollisions.length === 0}}">
+      <view class="empty-icon">🔍</view>
+      <view class="empty-text">还没有匹配记录</view>
+      <button class="btn-primary mt-20" bindtap="goToCollision">
+        立即发起碰撞
+      </button>
+    </view>
+  </view>
+</scroll-view>
