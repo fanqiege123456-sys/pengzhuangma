@@ -1,0 +1,49 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/normal-collision/normal-collision",
+    "pages/collision/collision",
+    "pages/collision-batch/collision-batch",
+    "pages/profile/profile",
+    "pages/edit-profile/edit-profile",
+    "pages/locations/locations",
+    "pages/location-edit/location-edit",
+    "pages/recharge/recharge",
+    "pages/settings/settings",
+    "pages/collision-result/collision-result",
+    "pages/email-bind/email-bind",
+    "pages/my-codes/my-codes",
+    "pages/consume-records/consume-records",
+    "pages/edit-collision-code/edit-collision-code"
+  ],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "碰撞火花",
+    "navigationBarBackgroundColor": "#E8F1FA",
+    "backgroundColor": "#E8F1FA"
+  },
+  "tabBar": {
+    "color": "#8E9AAB",
+    "selectedColor": "#4A90D9",
+    "backgroundColor": "#F8FAFC",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/normal-collision/normal-collision",
+        "text": "火花"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的"
+      }
+    ]
+  },
+  "style": "v2",
+  "componentFramework": "glass-easel",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}
