@@ -1,0 +1,71 @@
+<!--pages/friends/friends.wxml-->
+<view class="container">
+  <!-- 搜索栏 -->
+  <view class="search-section">
+    <input class="search-input" placeholder="搜索好友" value="{{searchText}}" bindinput="onSearchInput" />
+  </view>
+
+  <!-- 好友列表 -->
+  <scroll-view class="friends-scroll" scroll-y refresher-enabled="{{true}}" bindrefresherrefresh="onRefresh" refresher-triggered="{{refreshing}}">
+    <view class="friends-list">
+      <view class="friend-item" wx:for="{{friendsList}}" wx:key="id" bindtap="goToChat" data-user="{{item}}">
+        <image class="friend-avatar" src="{{item.avatar}}" />
+        <view class="friend-info">
+          <view class="friend-name">{{item.nickname}}</view>
+          <view class="friend-wechat">{{item.wechat_no}}</view>
+          <view class="friend-region" wx:if="{{item.region}}">{{item.region}}</view>
+        </view>
+        <view class="friend-status">
+          <text class="status-text {{item.status}}">
+            {{item.status === 'active' ? '正常' : '已屏蔽'}}
+          </text>
+        </view>
+        <view class="friend-actions">
+          <text class="action-btn" bindtap="showActions" data-friend="{{item}}" catchtap="true">⋯</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 空状态 -->
+    <view class="empty-state" wx:if="{{friendsList.length === 0 && !loading}}">
+      <text class="empty-icon">👥</text>
+      <text class="empty-text">还没有好友</text>
+      <text class="empty-desc">去碰撞匹配添加好友吧~</text>
+      <button class="btn-primary empty-action" bindtap="goToCollision">
+        开始碰撞
+      </button>
+    </view>
+  </scroll-view>
+</view>
+
+<!-- 操作菜单 -->
+<view class="action-modal" wx:if="{{showActionModal}}" bindtap="hideActionModal">
+  <view class="action-sheet" catchtap="stopPropagation">
+    <view class="action-header">
+      <image class="action-avatar" src="{{selectedFriend.avatar}}" />
+      <text class="action-name">{{selectedFriend.nickname}}</text>
+    </view>
+    
+    <view class="action-list">
+      <view class="action-item" bindtap="startChat">
+        <text class="action-text">发送消息</text>
+      </view>
+      
+      <view class="action-item" bindtap="copyWechat">
+        <text class="action-text">复制微信号</text>
+      </view>
+      
+      <view class="action-item" bindtap="{{selectedFriend.status === 'active' ? 'blockFriend' : 'unblockFriend'}}">
+        <text class="action-text">{{selectedFriend.status === 'active' ? '屏蔽好友' : '取消屏蔽'}}</text>
+      </view>
+      
+      <view class="action-item danger" bindtap="deleteFriend">
+        <text class="action-text">删除好友</text>
+      </view>
+    </view>
+    
+    <view class="action-cancel" bindtap="hideActionModal">
+      <text class="cancel-text">取消</text>
+    </view>
+  </view>
+</view>
