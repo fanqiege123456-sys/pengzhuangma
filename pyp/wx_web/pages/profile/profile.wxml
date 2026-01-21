@@ -1,0 +1,244 @@
+﻿<!--pages/profile/profile.wxml-->
+<view class="profile-container">
+  <!-- 未登录提示 -->
+  <view wx:if="{{!isLoggedIn}}" class="login-prompt-section">
+    <view class="prompt-card">
+      <view class="prompt-icon">👤</view>
+      <view class="prompt-title">个人中心</view>
+      <view class="prompt-desc">登录后查看您的个人信息和碰撞记录</view>
+      <button class="login-btn-primary" bindtap="handleLogin">立即登录</button>
+    </view>
+  </view>
+
+  <!-- 已登录显示完整内容 -->
+  <view wx:else>
+    <!-- 用户信息卡片 -->
+    <view class="profile-card">
+      <view class="profile-header">
+        <image class="profile-avatar" wx:if="{{userInfo.avatar}}" src="{{userInfo.avatar}}" bindtap="changeAvatar" />
+        <view class="profile-avatar-default" wx:else bindtap="changeAvatar">
+          <text class="avatar-text">{{userInfo.nickname ? userInfo.nickname.substr(0,1) : '?'}}</text>
+        </view>
+        <view class="profile-info">
+          <text class="profile-name">{{userInfo.nickname || '用户'}}</text>
+          <text class="profile-wechat">微信号: {{userInfo.wechat_no || '未设置'}}</text>
+        </view>
+        <view class="edit-btn" bindtap="editProfile">编辑资料</view>
+      </view>
+
+      <view class="profile-details">
+        <view class="detail-item">
+          <text class="detail-label">性别</text>
+          <text class="detail-value">{{userInfo.gender === 1 ? '男' : userInfo.gender === 2 ? '女' : '未设置'}}</text>
+        </view>
+        <view class="detail-item">
+          <text class="detail-label">年龄</text>
+          <text class="detail-value">{{userInfo.age || '未设置'}}</text>
+        </view>
+        <view class="detail-item">
+          <text class="detail-label">个人简介</text>
+          <text class="detail-value">{{userInfo.bio || '这个人很懒,什么都没留下'}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 联系方式认证 -->
+    <view class="contact-card">
+      <view class="card-title">📧 联系方式</view>
+
+      <!-- 邮箱 -->
+      <view class="contact-item">
+        <view class="contact-left">
+          <text class="contact-label">邮箱</text>
+          <text class="contact-value">{{userContact.email || '未绑定'}}</text>
+          <text wx:if="{{userContact.emailVerified}}" class="verified-badge">✓ 已验证</text>
+        </view>
+        <view class="contact-btn" bindtap="handleEmailBind">
+          {{userContact.email ? '更换' : '绑定'}}
+        </view>
+      </view>
+
+      <!-- 手机 -->
+      <view class="contact-item">
+        <view class="contact-left">
+          <text class="contact-label">手机</text>
+          <text class="contact-value">{{userContact.phone || '未绑定'}}</text>
+          <text wx:if="{{userContact.phoneVerified}}" class="verified-badge">✓ 已验证</text>
+          <text wx:if="{{!userContact.phoneVerified}}" class="contact-tip">手机号可选绑定，用于账号安全与通知</text>
+        </view>
+        <button class="contact-btn" open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber">
+          {{userContact.phone ? '更换' : '绑定'}}
+        </button>
+      </view>
+    </view>
+
+    <!-- 碰撞币余额 -->
+    <view class="balance-card">
+      <view class="balance-header">
+        <text class="balance-icon">💰</text>
+        <view class="balance-info">
+          <text class="balance-title">碰撞币余额</text>
+          <text class="balance-amount">{{balance || 0}}</text>
+        </view>
+      </view>
+      <view class="recharge-btn" bindtap="goRecharge">充值</view>
+    </view>
+
+    <!-- 我的碰撞记录 -->
+    <view class="collision-list-card">
+      <view class="card-header">
+        <text class="card-title">我的碰撞记录</text>
+        <view class="tab-switch">
+          <view
+            class="tab-item {{collisionTab === 'active' ? 'active' : ''}}"
+            data-tab="active"
+            bindtap="switchCollisionTab"
+          >
+            进行中
+            <text class="tab-count">{{activeCollisions.length}}</text>
+          </view>
+          <view
+            class="tab-item {{collisionTab === 'expired' ? 'active' : ''}}"
+            data-tab="expired"
+            bindtap="switchCollisionTab"
+          >
+            已过期
+            <text class="tab-count">{{expiredCollisions.length}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view wx:if="{{collisionTab === 'active'}}">
+        <view wx:if="{{activeCollisions.length === 0}}" class="empty-collision">
+          <text class="empty-icon">📭</text>
+          <text class="empty-text">暂无进行中的碰撞</text>
+          <text class="empty-tip">去发布一个关键词吧</text>
+        </view>
+        <view wx:else class="collision-scroll-wrapper">
+          <scroll-view class="collision-scroll" scroll-y>
+            <view class="collision-items">
+              <view
+                wx:for="{{activeCollisions}}"
+                wx:key="id"
+                class="collision-item"
+                bindtap="openCollisionCode"
+                data-id="{{item.id}}"
+              >
+                <view class="collision-main">
+                  <text class="collision-tag">{{item.tag}}</text>
+                  <text class="collision-status {{item.status_class === 'matched' ? 'active' : item.status_class}}">
+                    {{item.display_status}}
+                  </text>
+                </view>
+                <view class="collision-details">
+                  <text class="collision-detail">地区: {{item.province}} {{item.city}} {{item.district}}</text>
+                  <text class="collision-detail">剩余: {{item.expires_at_display}}</text>
+                </view>
+                <view wx:if="{{item.is_blackhole}}" class="blackhole-tip">
+                  <text>当前标签处于黑洞状态</text>
+                  <button class="mini-btn" data-id="{{item.id}}" catchtap="reverseBlackhole">重新碰撞</button>
+                </view>
+              </view>
+            </view>
+          </scroll-view>
+        </view>
+      </view>
+
+      <view wx:if="{{collisionTab === 'expired'}}">
+        <view wx:if="{{expiredCollisions.length === 0}}" class="empty-collision">
+          <text class="empty-icon">📭</text>
+          <text class="empty-text">暂无已过期的碰撞</text>
+          <text class="empty-tip">过期后可续期继续匹配</text>
+        </view>
+        <view wx:else class="collision-scroll-wrapper">
+          <scroll-view class="collision-scroll" scroll-y>
+            <view class="collision-items">
+              <view
+                wx:for="{{expiredCollisions}}"
+                wx:key="id"
+                class="collision-item expired"
+                bindtap="openCollisionCode"
+                data-id="{{item.id}}"
+              >
+                <view class="collision-main">
+                  <text class="collision-tag">{{item.tag}}</text>
+                  <text class="collision-status expired">{{item.display_status}}</text>
+                </view>
+                <view class="collision-details">
+                  <text class="collision-detail">地区: {{item.province}} {{item.city}} {{item.district}}</text>
+                  <text class="collision-detail">过期时间: {{item.expires_at_formatted}}</text>
+                </view>
+                <view class="collision-actions">
+                  <button class="action-btn renew" data-id="{{item.id}}" catchtap="renewCollision">续期</button>
+                  <button class="action-btn delete" data-id="{{item.id}}" catchtap="deleteCollision">删除</button>
+                </view>
+              </view>
+            </view>
+          </scroll-view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 功能菜单 -->
+    <view class="menu-list">
+      <view class="menu-section">
+        <text class="section-title">碰撞相关</text>
+        <view class="menu-item" bindtap="goMyMatches">
+          <view class="menu-left">
+            <text class="menu-icon">💫</text>
+            <text class="menu-text">我的匹配</text>
+          </view>
+          <text class="menu-arrow">></text>
+        </view>
+        <view class="menu-item" bindtap="goMyCollisionCodes">
+          <view class="menu-left">
+            <text class="menu-icon">📋</text>
+            <text class="menu-text">我的碰撞码</text>
+          </view>
+          <text class="menu-arrow">></text>
+        </view>
+      </view>
+
+      <view class="menu-section">
+        <text class="section-title">个人设置</text>
+        <view class="menu-item" bindtap="goLocations">
+          <view class="menu-left">
+            <text class="menu-icon">📍</text>
+            <text class="menu-text">地址管理</text>
+          </view>
+          <text class="menu-arrow">></text>
+        </view>
+        <view class="menu-item" bindtap="goSettings">
+          <view class="menu-left">
+            <text class="menu-icon">⚙️</text>
+            <text class="menu-text">系统设置</text>
+          </view>
+          <text class="menu-arrow">></text>
+        </view>
+      </view>
+
+      <view class="menu-section">
+        <text class="section-title">帮助中心</text>
+        <view class="menu-item" bindtap="goHelp">
+          <view class="menu-left">
+            <text class="menu-icon">❓</text>
+            <text class="menu-text">帮助与反馈</text>
+          </view>
+          <text class="menu-arrow">></text>
+        </view>
+        <view class="menu-item" bindtap="goAbout">
+          <view class="menu-left">
+            <text class="menu-icon">ℹ️</text>
+            <text class="menu-text">关于我们</text>
+          </view>
+          <text class="menu-arrow">></text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 退出登录按钮 -->
+    <view class="logout-section">
+      <button class="logout-btn" bindtap="logout">退出登录</button>
+    </view>
+  </view>
+</view>
