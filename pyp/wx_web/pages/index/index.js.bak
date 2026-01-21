@@ -1,0 +1,187 @@
+// pages/index/index.js
+const api = require('../../utils/api.js')
+
+Page({
+  data: {
+    userInfo: null,
+    welcomeMessage: '你好，欢迎使用！',
+    recentCollisions: []
+  },
+
+  onLoad() {
+    // 静默检查登录状态，不强制弹窗
+    this.checkLoginStatus()
+  },
+
+  onShow() {
+    // 每次显示页面时刷新数据（如果已登录）
+    this.checkLoginStatus()
+    this.loadRecentCollisions()
+  },
+
+  // 检查登录状态（静默，不弹窗）
+  checkLoginStatus() {
+    const app = getApp()
+    if (app.globalData.hasLogin) {
+      this.loadUserInfo()
+    } else {
+      // 显示游客状态
+      this.setData({
+        userInfo: null,
+        welcomeMessage: '欢迎使用碰撞交友小程序'
+      })
+    }
+  },
+
+  // 手动触发登录
+  handleLogin() {
+    const app = getApp()
+    app.requireLogin(true) // 显示登录弹窗
+  },
+
+  // 加载用户信息
+  async loadUserInfo() {
+    try {
+      const app = getApp()
+      
+      // 确保已登录
+      if (!app.globalData.hasLogin || !app.globalData.token) {
+        console.log('未登录，无法加载用户信息')
+        return
+      }
+
+      // 获取用户信息
+      const res = await api.getUserInfo()
+      if (res.data.code === 200) {
+        const userInfo = res.data.data
+        app.globalData.userInfo = userInfo
+        
+        this.setData({
+          userInfo: userInfo,
+          welcomeMessage: `你好，${userInfo.nickname || '朋友'}！`
+        })
+      }
+    } catch (error) {
+      console.error('加载用户信息失败', error)
+      this.setData({
+        welcomeMessage: '你好，欢迎使用！'
+      })
+    }
+  },
+
+  // 加载最近的匹配记录
+  async loadRecentCollisions() {
+    const app = getApp()
+    if (!app.globalData.token) {
+      console.log('用户未登录，跳过加载匹配记录')
+      return
+    }
+
+    try {
+      const res = await api.getMatches()
+      
+      if (res.data.code === 200) {
+        const matches = res.data.data || []
+        // 只显示最近的3条记录
+        const recentMatches = matches.slice(0, 3).map(match => {
+          // 判断当前用户是 user1 还是 user2
+          const currentUserId = app.globalData.userInfo?.id
+          const partner = match.user_id1 === currentUserId ? match.User2 : match.User1
+          
+          return {
+            id: match.id,
+            tag: match.tag || '未知标签',
+            time: this.formatTime(match.created_at),
+            partner: partner?.nickname || '未知用户',
+            partnerAvatar: partner?.avatar || '/images/default-avatar.png',
+            status: match.status, // matched, friend_added, missed
+            matchType: match.match_type // district, city, province, country
+          }
+        })
+        
+        this.setData({
+          recentCollisions: recentMatches
+        })
+      }
+    } catch (error) {
+      console.error('加载匹配记录失败', error)
+    }
+  },
+
+  // 格式化时间
+  formatTime(dateString) {
+    const date = new Date(dateString)
+    const now = new Date()
+    const diff = now - date
+    
+    // 小于1分钟
+    if (diff < 60000) {
+      return '刚刚'
+    }
+    // 小于1小时
+    if (diff < 3600000) {
+      return `${Math.floor(diff / 60000)}分钟前`
+    }
+    // 小于24小时
+    if (diff < 86400000) {
+      return `${Math.floor(diff / 3600000)}小时前`
+    }
+    // 大于24小时
+    const month = date.getMonth() + 1
+    const day = date.getDate()
+    const hour = date.getHours()
+    const minute = date.getMinutes()
+    return `${month}月${day}日 ${hour}:${minute < 10 ? '0' + minute : minute}`
+  },
+
+  // 跳转到碰撞页面
+  goToCollision() {
+    wx.switchTab({
+      url: '/pages/collision/collision'
+    })
+  },
+
+  // 跳转到匹配列表
+  goToMatches() {
+    wx.navigateTo({
+      url: '/pages/match/list'
+    })
+  },
+
+  // 跳转到设置页面
+  goToSettings() {
+    wx.navigateTo({
+      url: '/pages/settings/settings'
+    })
+  },
+
+  // 跳转到匹配详情
+  goToMatchDetail(e) {
+    const matchId = e.currentTarget.dataset.id
+    wx.navigateTo({
+      url: `/pages/match/detail?id=${matchId}`
+    })
+  },
+
+  // 手动触发登录（用于测试）
+  handleLogin() {
+    const app = getApp()
+    
+    app.login()
+      .then(() => {
+        wx.showToast({
+          title: '登录成功',
+          icon: 'success'
+        })
+        // 刷新页面数据
+        setTimeout(() => {
+          this.loadUserInfo()
+          this.loadRecentCollisions()
+        }, 1500)
+      })
+      .catch((err) => {
+        console.error('登录失败:', err)
+        // login 方法内部已经处理了错误提示
+      })
+  }
+})
