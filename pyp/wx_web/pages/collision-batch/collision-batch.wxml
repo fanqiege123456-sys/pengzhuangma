@@ -1,0 +1,157 @@
+<!--pages/collision-batch/collision-batch.wxml-->
+<view class="container">
+  <!-- 头部说明 -->
+  <view class="header">
+    <text class="title">批量生成碰撞组合</text>
+    <text class="subtitle">选择多个地址和条件,快速生成碰撞列表</text>
+  </view>
+
+  <!-- 条件设置区 -->
+  <view class="settings-section">
+    <view class="section-title">基础信息</view>
+    
+    <!-- 兴趣标签 -->
+    <view class="form-item">
+      <view class="label">兴趣标签</view>
+      <input 
+        class="input" 
+        placeholder="选填,如:摄影、旅游、美食" 
+        value="{{tag}}"
+        bindinput="onTagInput"
+      />
+    </view>
+
+    <!-- 期望性别 -->
+    <view class="form-item">
+      <view class="label">期望性别</view>
+      <view class="gender-options">
+        <view 
+          class="gender-item {{gender === 0 ? 'active' : ''}}" 
+          bindtap="selectGender" 
+          data-gender="0"
+        >
+          不限
+        </view>
+        <view 
+          class="gender-item {{gender === 1 ? 'active' : ''}}" 
+          bindtap="selectGender" 
+          data-gender="1"
+        >
+          男生
+        </view>
+        <view 
+          class="gender-item {{gender === 2 ? 'active' : ''}}" 
+          bindtap="selectGender" 
+          data-gender="2"
+        >
+          女生
+        </view>
+      </view>
+    </view>
+
+    <!-- 年龄范围 -->
+    <view class="form-item">
+      <view class="label">年龄范围</view>
+      <view class="age-range">
+        <input 
+          class="age-input" 
+          type="number" 
+          placeholder="最小"
+          value="{{ageMin}}"
+          bindinput="onAgeMinInput"
+        />
+        <text class="separator">-</text>
+        <input 
+          class="age-input" 
+          type="number" 
+          placeholder="最大"
+          value="{{ageMax}}"
+          bindinput="onAgeMaxInput"
+        />
+        <text class="unit">岁</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 地址选择区 -->
+  <view class="locations-section">
+    <view class="section-header">
+      <view class="section-title">选择地址</view>
+      <view class="select-all">
+        <checkbox-group bindchange="toggleSelectAll">
+          <label>
+            <checkbox checked="{{allSelected}}" />
+            <text>全选</text>
+          </label>
+        </checkbox-group>
+      </view>
+    </view>
+
+    <view class="locations-list">
+      <checkbox-group bindchange="onLocationChange">
+        <label class="location-item" wx:for="{{locations}}" wx:key="id">
+          <checkbox value="{{item.id}}" checked="{{selectedLocations.includes(item.id)}}" />
+          <view class="location-info">
+            <view class="location-label">
+              <text class="label-tag">{{item.label}}</text>
+              <text class="location-text">{{item.province}} {{item.city}} {{item.district}}</text>
+            </view>
+            <text class="default-tag" wx:if="{{item.is_default}}">默认</text>
+          </view>
+        </label>
+      </checkbox-group>
+    </view>
+
+    <view class="add-location-btn" bindtap="goToAddLocation">
+      <text class="plus-icon">+</text>
+      <text>添加新地址</text>
+    </view>
+  </view>
+
+  <!-- 生成的组合列表 -->
+  <view class="combinations-section" wx:if="{{combinations.length > 0}}">
+    <view class="section-header">
+      <view class="section-title">组合列表 ({{combinations.length}}个)</view>
+      <view class="cost-info">总消耗: {{totalCost}} 碰撞币</view>
+    </view>
+
+    <view class="combinations-list">
+      <view class="combination-item" wx:for="{{combinations}}" wx:key="index">
+        <view class="combination-info">
+          <view class="info-row">
+            <text class="info-label">地址:</text>
+            <text class="info-value">{{item.province}} {{item.city}} {{item.district}}</text>
+          </view>
+          <view class="info-row" wx:if="{{item.tag}}">
+            <text class="info-label">标签:</text>
+            <text class="info-value">{{item.tag}}</text>
+          </view>
+          <view class="info-row">
+            <text class="info-label">条件:</text>
+            <text class="info-value">
+              {{item.gender === 0 ? '不限性别' : item.gender === 1 ? '男生' : '女生'}} / 
+              {{item.age_min}}-{{item.age_max}}岁
+            </text>
+          </view>
+        </view>
+        <view class="delete-btn" bindtap="deleteCombination" data-index="{{index}}">
+          <text>删除</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部操作区 -->
+  <view class="footer-actions">
+    <button class="generate-btn" bindtap="generateCombinations">
+      生成组合列表
+    </button>
+    <button 
+      class="submit-btn" 
+      bindtap="submitBatch" 
+      disabled="{{combinations.length === 0}}"
+    >
+      批量提交 ({{totalCost}} 碰撞币)
+    </button>
+  </view>
+</view>
