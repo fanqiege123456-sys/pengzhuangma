@@ -1,0 +1,99 @@
+<!--pages/recharge/recharge.wxml-->
+<view class="container">
+  <!-- 当前余额 -->
+  <view class="balance-info">
+    <text class="balance-label">当前余额</text>
+    <text class="balance-amount">¥{{currentBalance}}</text>
+  </view>
+
+  <!-- 充值金额选择 -->
+  <view class="recharge-section">
+    <view class="section-title">选择充值金额</view>
+    <view class="amount-grid">
+      <view 
+        class="amount-item {{selectedAmount === item.value ? 'selected' : ''}}" 
+        wx:for="{{amountOptions}}" 
+        wx:key="value"
+        bindtap="selectAmount" 
+        data-amount="{{item.value}}"
+      >
+        <text class="amount-value">¥{{item.value}}</text>
+        <text class="amount-desc" wx:if="{{item.desc}}">{{item.desc}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 自定义金额 -->
+  <view class="custom-amount">
+    <view class="section-title">自定义金额</view>
+    <view class="input-wrapper">
+      <text class="currency">¥</text>
+      <input 
+        class="amount-input" 
+        type="digit" 
+        placeholder="输入充值金额"
+        value="{{customAmount}}"
+        bindinput="onCustomAmountInput"
+        bindblur="onCustomAmountBlur"
+      />
+    </view>
+    <text class="amount-tips">充值金额最低1元，最高10000元</text>
+  </view>
+
+  <!-- 支付方式 -->
+  <view class="payment-section">
+    <view class="section-title">选择支付方式</view>
+    <view class="payment-methods">
+      <view class="payment-item selected">
+        <text class="payment-icon">💳</text>
+        <text class="payment-name">微信支付</text>
+        <text class="payment-check">✓</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 充值按钮 -->
+  <view class="recharge-button">
+    <button 
+      class="btn-primary btn-recharge" 
+      bindtap="submitRecharge"
+      disabled="{{!finalAmount || submitting}}"
+    >
+      {{submitting ? '处理中...' : '立即充值 ¥' + finalAmount}}
+    </button>
+  </view>
+
+  <!-- 消费记录 -->
+  <view class="consume-records-section">
+    <view class="section-title">💰 消费记录</view>
+    <scroll-view wx:if="{{consumeRecords.length > 0}}" class="records-scroll" scroll-y>
+      <view class="records-list">
+        <view wx:for="{{consumeRecords}}" wx:key="id" class="record-item">
+          <view class="record-info">
+            <text class="record-type">{{item.type_display}}</text>
+            <text class="record-desc">{{item.description}}</text>
+            <text class="record-time">{{item.created_at_display}}</text>
+          </view>
+          <view class="record-amount">
+            <text class="amount-text {{item.amount_display > 0 ? 'positive' : 'negative'}}">
+              {{item.amount_display > 0 ? '+' : ''}}{{item.amount_display}}
+            </text>
+          </view>
+        </view>
+      </view>
+    </scroll-view>
+    <view wx:else class="empty-records">
+      <text class="empty-icon">📝</text>
+      <text class="empty-text">暂无消费记录</text>
+    </view>
+  </view>
+
+  <!-- 充值说明 -->
+  <view class="recharge-tips">
+    <view class="tips-title">充值说明</view>
+    <text class="tips-item">• 充值后余额实时到账</text>
+    <text class="tips-item">• 每次提交碰撞码消耗1元</text>
+    <text class="tips-item">• 成功匹配并添加好友可获得积分奖励</text>
+    <text class="tips-item">• 如有问题请联系客服处理</text>
+  </view>
+</view>
