@@ -1,0 +1,46 @@
+<!--pages/locations/locations.wxml-->
+<view class="container">
+  <!-- 地址列表 -->
+  <view class="locations-list" wx:if="{{locations.length > 0}}">
+    <view 
+      wx:for="{{locations}}" 
+      wx:key="id" 
+      class="location-item {{item.is_default ? 'default' : ''}}"
+    >
+      <view class="location-header">
+        <view class="location-label">
+          <text class="label-icon">{{labelIcons[item.label]}}</text>
+          <text class="label-text">{{labelTexts[item.label]}}</text>
+          <text wx:if="{{item.is_default}}" class="default-badge">默认</text>
+        </view>
+        <view class="location-actions">
+          <text class="action-btn" bindtap="editLocation" data-id="{{item.id}}">编辑</text>
+          <text class="action-btn delete" bindtap="confirmDelete" data-id="{{item.id}}" wx:if="{{!item.is_default || locations.length === 1}}">删除</text>
+        </view>
+      </view>
+      
+      <view class="location-address">
+        <text>{{item.country || ''}}{{item.province || ''}}{{item.city || ''}}{{item.district || ''}}</text>
+      </view>
+      
+      <view class="location-footer" wx:if="{{!item.is_default}}">
+        <view class="set-default-btn" bindtap="setDefault" data-id="{{item.id}}">设为默认</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty-state" wx:if="{{locations.length === 0}}">
+    <text class="empty-icon">📍</text>
+    <text class="empty-text">暂无地址</text>
+    <text class="empty-hint">添加常用地址,方便碰撞匹配</text>
+  </view>
+
+  <!-- 添加按钮 -->
+  <view class="add-button-wrapper">
+    <view class="add-btn" bindtap="addLocation">
+      <text class="add-icon">+</text>
+      <text>添加地址</text>
+    </view>
+  </view>
+</view>
