@@ -1,0 +1,81 @@
+<!--pages/email-bind/email-bind.wxml-->
+<view class="email-bind-container">
+  <!-- 说明卡片 -->
+  <view class="info-card">
+    <text class="info-icon">📧</text>
+    <view class="info-content">
+      <text class="info-title">为什么要绑定邮箱?</text>
+      <text class="info-desc">绑定邮箱后,碰撞匹配成功时,系统会通过邮件通知您。您也可以通过邮件链接标记"已知"状态。</text>
+    </view>
+  </view>
+
+  <!-- 绑定表单 -->
+  <view class="bind-form">
+    <!-- 邮箱输入 -->
+    <view class="form-item">
+      <text class="form-label">邮箱地址</text>
+      <view class="input-wrapper">
+        <input 
+          class="form-input" 
+          type="text"
+          placeholder="请输入您的邮箱地址" 
+          placeholder-class="input-placeholder"
+          value="{{email}}"
+          bindinput="onEmailInput"
+        />
+      </view>
+    </view>
+
+    <!-- 验证码区域 -->
+    <view class="form-item" wx:if="{{showVerifyCode}}">
+      <text class="form-label">验证码</text>
+      <view class="verify-input-box">
+        <view class="input-wrapper verify-input-wrapper">
+          <input 
+            class="form-input" 
+            type="number"
+            maxlength="6"
+            placeholder="请输入6位验证码" 
+            placeholder-class="input-placeholder"
+            value="{{verifyCode}}"
+            bindinput="onVerifyCodeInput"
+          />
+        </view>
+        <view 
+          class="send-code-btn {{countdown > 0 ? 'disabled' : ''}}" 
+          bindtap="sendVerifyCode"
+        >
+          {{countdown > 0 ? countdown + 's' : '发送验证码'}}
+        </view>
+      </view>
+    </view>
+
+    <!-- 提示文字 -->
+    <view class="form-tip" wx:if="{{showVerifyCode}}">
+      <text class="tip-text">验证码已发送至 {{email}},请注意查收</text>
+    </view>
+
+    <!-- 按钮 -->
+    <view 
+      class="bind-btn" 
+      bindtap="{{showVerifyCode ? 'handleVerify' : 'handleBind'}}"
+    >
+      {{showVerifyCode ? '确认绑定' : '获取验证码'}}
+    </view>
+
+    <view class="privacy-tip">
+      <text>绑定即表示您同意</text>
+      <text class="link">《隐私政策》</text>
+    </view>
+  </view>
+
+  <!-- 已绑定邮箱 -->
+  <view class="current-email" wx:if="{{currentEmail}}">
+    <view class="current-label">当前绑定邮箱</view>
+    <view class="current-value">
+      <text>{{currentEmail}}</text>
+      <text class="verified-badge" wx:if="{{isVerified}}">✓ 已验证</text>
+    </view>
+    <view class="change-btn" bindtap="handleChange">更换邮箱</view>
+  </view>
+</view>
